@@ -7,7 +7,7 @@ window.SITE_CONFIG = {
 
   // WhatsApp no formato internacional, só números (ex: 5511999998888).
   // TODO: preencher com o número da Regiane.
-  whatsapp: "",
+  whatsapp: "5519991831556",
 
   // Instagram da Regiane
   instagram: "https://www.instagram.com/re_paulino82/",
