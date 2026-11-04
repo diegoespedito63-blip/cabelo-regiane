@@ -29,6 +29,7 @@
   <header class="a-topo">
     <div class="logo"><span class="mono">RP</span>Regiane Paulino <small>Painel</small></div>
     <div class="topo-dir">
+      <button class="sync" id="sync" title="Atualizar agora"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/></svg><span id="sync-txt">Atualizando…</span></button>
       <span class="modo" id="modo"></span>
       <a href="index.html" class="a-link" target="_blank">Ver site ↗</a>
     </div>
@@ -38,21 +39,23 @@
     <!-- AGENDA -->
     <section class="view ativa" id="v-agenda">
       <div id="ag-pendentes"></div>
-      <div class="abas" id="ag-modo">
-        <button class="aba ativa" data-m="dia">Dia · horário a horário</button>
-        <button class="aba" data-m="semana">Semana · todos os dias</button>
-      </div>
       <div class="cab">
-        <button class="ic" data-dia="-1" aria-label="Dia anterior">‹</button>
+        <button class="ic" data-mes="-1" aria-label="Mês anterior">‹</button>
         <div class="cab-centro">
           <h2 id="ag-titulo"></h2>
+          <small class="mes-resumo" id="ag-mes-resumo"></small>
           <button class="lnk" id="ag-hoje">Ir para hoje</button>
         </div>
-        <button class="ic" data-dia="1" aria-label="Próximo dia">›</button>
+        <button class="ic" data-mes="1" aria-label="Próximo mês">›</button>
       </div>
-      <div class="semana" id="ag-semana"></div>
-      <div class="resumo" id="ag-resumo"></div>
-      <div class="lista" id="ag-lista"></div>
+      <div class="mes" id="ag-mes"></div>
+      <div class="mes-legenda"><span><i class="lg-hoje"></i>Hoje</span><span><i class="lg-pend"></i>Aguardando confirmação</span><span><i class="lg-fech"></i>Fechado / bloqueado</span></div>
+
+      <div class="dia-det">
+        <h3 class="dia-tit" id="ag-dia-titulo"></h3>
+        <div class="resumo" id="ag-resumo"></div>
+        <div class="lista" id="ag-lista"></div>
+      </div>
       <button class="fab" data-novo="agendamento">+ Agendar</button>
     </section>
 
