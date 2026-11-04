@@ -60,7 +60,7 @@ window.API = (function () {
     return {
       servicos: C.servicos.map((s, i) => ({ id: s.id, nome: s.nome, descricao: s.desc, duracao_min: s.duracao || 60, preco: s.preco || 0, ativo: true, ordem: i + 1 }))
         .concat([{ id: "avaliacao", nome: "Avaliação", descricao: "", duracao_min: 30, preco: 0, ativo: true, ordem: 99 }]),
-      horarios: [0, 1, 2, 3, 4, 5, 6].map((d) => ({ dia_semana: d, ativo: d >= 2, inicio: "09:00", fim: "19:00", pausa_inicio: "12:00", pausa_fim: "13:00" })),
+      horarios: [0, 1, 2, 3, 4, 5, 6].map((d) => ({ dia_semana: d, ativo: d >= 1 && d <= 5, inicio: "08:00", fim: d === 5 ? "17:30" : "18:00", pausa_inicio: "12:00", pausa_fim: "13:30" })),
       ajustes: [{ id: 1, intervalo_min: 30, antecedencia_horas: 2, janela_dias: 60, cancelamento_horas: 12, confirmacao_automatica: false, mostrar_precos: false }],
       bloqueios: [], clientes: [], agendamentos: [], produtos: [], vendas: []
     };
