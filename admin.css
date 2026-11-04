@@ -161,3 +161,8 @@ button { font-family: inherit; cursor: pointer; }
 .modal { max-height: 92vh; }
 .modal form { max-height: 92vh; overflow: auto; }
 .btn:disabled { opacity: .6; }
+
+/* acabamento arredondado */
+.login-card { border-top: 0; border-radius: 24px; }
+.modal { border-radius: 24px; }
+.pill, .st { border-radius: 999px; }
