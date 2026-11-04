@@ -7,11 +7,11 @@ window.SITE_CONFIG = {
 
   // WhatsApp no formato internacional, só números (ex: 5511999998888).
   // TODO: preencher com o número da Regiane.
-  whatsapp: "5519991831556",
+  whatsapp: "",
 
-  // TODO: trocar pelo link do Instagram quando chegar.
+  // Instagram da Regiane
   instagram: "https://www.instagram.com/re_paulino82/",
-  instagramHandle: "@regianepaulino",
+  instagramHandle: "@re_paulino82",
 
   maryKay: "https://loja.marykay.com.br/minha-vitrine?slug=rehpaulino",
 
@@ -28,6 +28,7 @@ window.SITE_CONFIG = {
     url: "https://ikvhnbxvgsdigkiaajnf.supabase.co",
     anonKey: "sb_publishable_-Amp1qUHCjOfpjTSo38cNw_v_JxzcvW"
   },
+
 
   // Textos de marketing dos serviços (o que aparece na seção "Especialidades").
   // Duração e preço reais são configurados no painel → Ajustes → Serviços.
