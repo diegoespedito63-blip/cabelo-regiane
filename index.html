@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regiane Paulino · Hair Stylist & Consultora de Beleza Mary Kay</title>
+  <meta name="description" content="Cortes, progressiva, luzes, morena iluminada e coloração com Regiane Paulino. Atendimento com hora marcada e consultoria de beleza Mary Kay.">
+  <meta name="theme-color" content="#1f1a17">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topo" id="topo">
+    <div class="topo-in">
+      <a href="#inicio" class="marca">
+        <span class="marca-mono">RP</span>
+        <span class="marca-nome">Regiane Paulino<small>Hair Stylist</small></span>
+      </a>
+      <button class="menu-btn" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
+      <nav class="menu">
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#galeria">Portfólio</a>
+        <a href="#marykay">Mary Kay</a>
+        <a href="#agendar" class="btn btn-sm">Agendar horário</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <div class="hero-in">
+        <div class="hero-texto">
+          <p class="sobretitulo">Hair Stylist · Consultora de Beleza Mary Kay</p>
+          <h1>A versão mais bonita<br>do seu cabelo <em>começa aqui.</em></h1>
+          <p class="lead">Corte, cor e tratamento com técnica, cuidado e atenção a cada detalhe — para um resultado que valoriza quem você é.</p>
+          <div class="acoes">
+            <a href="#agendar" class="btn">Agendar horário</a>
+            <a href="#galeria" class="btn btn-linha">Ver portfólio</a>
+          </div>
+          <ul class="diferenciais">
+            <li>Atendimento com hora marcada</li>
+            <li>Diagnóstico personalizado</li>
+            <li>Produtos profissionais</li>
+          </ul>
+        </div>
+        <div class="hero-midia">
+          <div class="hero-moldura">
+            <img src="hero.jpg" alt="Luzes e corte realizados por Regiane Paulino" class="hero-img">
+          </div>
+          <div class="hero-cartao">
+            <img src="regiane.webp" alt="Regiane Paulino">
+            <div><strong>Regiane Paulino</strong><span>Cabeleireira</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="secao" id="sobre">
+      <div class="sobre">
+        <div class="sobre-foto revelar">
+          <img src="regiane.webp" alt="Regiane Paulino" loading="lazy">
+        </div>
+        <div class="sobre-texto revelar">
+          <p class="sobretitulo">Sobre mim</p>
+          <h2>Cuidar do seu cabelo é<br><em>cuidar de você.</em></h2>
+          <p>Sou a Regiane, cabeleireira apaixonada por transformações. Do corte reto clássico à morena iluminada, cada atendimento começa com uma conversa: entender o que você deseja, avaliar a saúde dos fios e indicar o caminho certo para chegar lá.</p>
+          <p>Como consultora de beleza Mary Kay, também te ajudo a completar o visual com cuidados para a pele, maquiagem e fragrâncias.</p>
+          <div class="assinatura">Regiane Paulino</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section class="secao secao-alt" id="servicos">
+      <div class="secao-in">
+        <div class="secao-cab revelar">
+          <p class="sobretitulo">Serviços</p>
+          <h2>Especialidades</h2>
+          <p>Técnicas atuais e um olhar cuidadoso para a saúde do seu cabelo.</p>
+        </div>
+        <div class="servicos" id="lista-servicos"></div>
+      </div>
+    </section>
+
+    <!-- PORTFÓLIO -->
+    <section class="secao" id="galeria">
+      <div class="secao-in">
+        <div class="secao-cab revelar">
+          <p class="sobretitulo">Portfólio</p>
+          <h2>Antes & depois</h2>
+          <p>Alguns dos resultados recentes do salão.</p>
+        </div>
+        <div class="filtros" role="tablist">
+          <button class="filtro ativo" data-cat="todos">Todos</button>
+          <button class="filtro" data-cat="corte">Cortes</button>
+          <button class="filtro" data-cat="progressiva">Progressiva</button>
+          <button class="filtro" data-cat="cor">Cor & mechas</button>
+        </div>
+        <div class="galeria" id="lista-galeria"></div>
+        <p class="centro"><a class="btn btn-linha" id="link-insta-galeria" target="_blank" rel="noopener"></a></p>
+      </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section class="secao secao-alt">
+      <div class="secao-in">
+        <div class="secao-cab revelar">
+          <p class="sobretitulo">Como funciona</p>
+          <h2>Do agendamento ao resultado</h2>
+        </div>
+        <ol class="passos">
+          <li class="revelar"><span>01</span><h3>Agende</h3><p>Escolha o serviço, o dia e o horário pelo formulário. A solicitação chega direto no meu WhatsApp.</p></li>
+          <li class="revelar"><span>02</span><h3>Avaliação</h3><p>No atendimento, conversamos sobre o que você deseja e avalio o histórico e a saúde dos fios.</p></li>
+          <li class="revelar"><span>03</span><h3>Transformação</h3><p>Execução com técnica e produtos profissionais, e orientações para manter o resultado em casa.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- MARY KAY -->
+    <section class="marykay" id="marykay">
+      <div class="mk-in">
+        <div class="mk-texto revelar">
+          <p class="sobretitulo claro">Consultora de Beleza Independente</p>
+          <h2>Beleza completa,<br><em>além do cabelo.</em></h2>
+          <p>Conheça minha vitrine Mary Kay e receba indicações personalizadas para a sua pele e o seu estilo.</p>
+          <div class="acoes">
+            <a class="btn btn-claro" id="link-marykay" target="_blank" rel="noopener">Acessar minha vitrine</a>
+            <a class="btn btn-linha-claro" id="whats-marykay" target="_blank" rel="noopener">Falar com a consultora</a>
+          </div>
+        </div>
+        <ul class="mk-categorias revelar" id="mk-categorias"></ul>
+      </div>
+    </section>
+
+    <!-- AGENDAMENTO ONLINE -->
+    <section class="secao secao-alt" id="agendar">
+      <div class="secao-in">
+        <div class="secao-cab revelar">
+          <p class="sobretitulo">Agendamento online</p>
+          <h2>Reserve seu horário</h2>
+          <p>Escolha o serviço, o dia e o horário disponível. Leva menos de um minuto.</p>
+        </div>
+
+        <div class="agenda" id="agenda">
+          <ol class="etapas" id="ag-etapas">
+            <li data-e="1"><span>1</span>Serviço</li>
+            <li data-e="2"><span>2</span>Data</li>
+            <li data-e="3"><span>3</span>Horário</li>
+            <li data-e="4"><span>4</span>Seus dados</li>
+          </ol>
+
+          <div class="agenda-grid">
+            <div class="agenda-corpo" aria-live="polite">
+              <div class="ag-estado" id="ag-carregando"><span class="spinner"></span>Carregando horários disponíveis…</div>
+              <div class="ag-estado" id="ag-falha" hidden>
+                <p>Não foi possível carregar a agenda agora.</p>
+                <button class="btn btn-linha btn-sm" id="ag-tentar">Tentar de novo</button>
+              </div>
+
+              <!-- 1. Serviço -->
+              <div class="etapa" data-etapa="1" hidden>
+                <h3 class="etapa-tit">Qual serviço você deseja?</h3>
+                <div class="op-servicos" id="ag-servicos"></div>
+              </div>
+
+              <!-- 2. Data -->
+              <div class="etapa" data-etapa="2" hidden>
+                <h3 class="etapa-tit">Escolha o dia</h3>
+                <div class="calendario">
+                  <div class="cal-cab">
+                    <button type="button" class="cal-nav" id="cal-ant" aria-label="Mês anterior">‹</button>
+                    <strong id="cal-mes"></strong>
+                    <button type="button" class="cal-nav" id="cal-prox" aria-label="Próximo mês">›</button>
+                  </div>
+                  <div class="cal-semana"><span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span></div>
+                  <div class="cal-dias" id="cal-dias"></div>
+                  <div class="cal-legenda"><span><i class="livre"></i>Disponível</span><span><i class="lotado"></i>Indisponível</span></div>
+                </div>
+              </div>
+
+              <!-- 3. Horário -->
+              <div class="etapa" data-etapa="3" hidden>
+                <h3 class="etapa-tit">Horários em <span id="ag-dia-tit"></span></h3>
+                <div id="ag-slots"></div>
+              </div>
+
+              <!-- 4. Dados -->
+              <form class="etapa form-ag" data-etapa="4" id="ag-form" novalidate hidden>
+                <h3 class="etapa-tit">Seus dados</h3>
+                <label>Nome completo
+                  <input type="text" name="nome" required autocomplete="name" placeholder="Seu nome" maxlength="80">
+                </label>
+                <label>WhatsApp
+                  <input type="tel" name="telefone" required autocomplete="tel" inputmode="numeric" placeholder="(00) 00000-0000" maxlength="16">
+                </label>
+                <label>Observações <small>opcional</small>
+                  <textarea name="obs" rows="3" maxlength="500" placeholder="Ex.: quero manter o comprimento, tenho química recente…"></textarea>
+                </label>
+                <label class="aceite">
+                  <input type="checkbox" name="aceite" required>
+                  <span>Concordo em ser contatada pelo WhatsApp sobre este agendamento e com o uso dos meus dados apenas para esse fim.</span>
+                </label>
+                <p class="form-erro" id="ag-erro" role="alert"></p>
+                <button type="submit" class="btn btn-full" id="ag-enviar">Confirmar agendamento</button>
+              </form>
+
+              <!-- 5. Sucesso -->
+              <div class="etapa sucesso" data-etapa="5" hidden>
+                <div class="sucesso-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg></div>
+                <h3 id="ok-titulo">Solicitação recebida!</h3>
+                <p id="ok-texto"></p>
+                <div class="ok-codigo">Código do agendamento<strong id="ok-codigo"></strong><small>Guarde este código para consultar ou cancelar.</small></div>
+                <div class="ok-acoes">
+                  <a class="btn" id="ok-google" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>
+                  <button type="button" class="btn btn-linha" id="ok-ics">Baixar para o calendário</button>
+                  <a class="btn btn-linha" id="ok-whats" target="_blank" rel="noopener" hidden>Avisar no WhatsApp</a>
+                </div>
+                <button type="button" class="lnk" id="ok-novo">Fazer outro agendamento</button>
+              </div>
+            </div>
+
+            <aside class="agenda-resumo">
+              <h4>Resumo</h4>
+              <dl>
+                <div><dt>Serviço</dt><dd id="rs-servico">—</dd></div>
+                <div><dt>Duração</dt><dd id="rs-duracao">—</dd></div>
+                <div id="rs-preco-l" hidden><dt>Valor</dt><dd id="rs-preco">—</dd></div>
+                <div><dt>Data</dt><dd id="rs-data">—</dd></div>
+                <div><dt>Horário</dt><dd id="rs-hora">—</dd></div>
+              </dl>
+              <button type="button" class="btn btn-linha btn-sm btn-full" id="ag-voltar" hidden>← Voltar</button>
+              <div class="resumo-info">
+                <p><strong>Atendimento</strong><span id="info-horario"></span></p>
+                <p><strong>Instagram</strong><a id="info-insta" target="_blank" rel="noopener"></a></p>
+                <button type="button" class="lnk" id="abrir-consulta">Consultar ou cancelar um agendamento</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape-in">
+      <div>
+        <a href="#inicio" class="marca claro">
+          <span class="marca-mono">RP</span>
+          <span class="marca-nome">Regiane Paulino<small>Hair Stylist</small></span>
+        </a>
+        <p class="rodape-desc">Cortes, cor e tratamentos capilares. Consultora de Beleza Independente Mary Kay.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#galeria">Portfólio</a><a href="#agendar">Agendar</a>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <a id="rod-whats" target="_blank" rel="noopener">WhatsApp</a>
+        <a id="rod-insta" target="_blank" rel="noopener">Instagram</a>
+        <a id="rod-mk" target="_blank" rel="noopener">Vitrine Mary Kay</a>
+      </div>
+    </div>
+    <div class="rodape-base">
+      <small>© <span id="ano"></span> Regiane Paulino. Todos os direitos reservados.</small>
+      <small>Mary Kay® é marca registrada da Mary Kay Inc.</small>
+    </div>
+  </footer>
+
+  <a class="whats-flutuante" id="whats-flutuante" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 32 32" width="26" height="26" fill="currentColor"><path d="M16 3C8.8 3 3 8.8 3 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.7c1.9 1 4 1.6 6.2 1.6 7.2 0 13-5.8 13-13S23.2 3 16 3zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-4 1 1.1-3.9-.3-.4C5.7 19.9 5.2 18 5.2 16 5.2 10 10 5.2 16 5.2S26.8 10 26.8 16 22 26.6 16 26.6zm5.9-8c-.3-.2-1.900-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.200 3.2 1.4 3.5c.2.2 2.4 3.6 5.7 5 .8.3 1.4.5 1.9.7.8.3 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.7-.5z"/></svg>
+  </a>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lb-fechar" aria-label="Fechar">×</button>
+    <button class="lb-nav lb-ant" aria-label="Anterior">‹</button>
+    <figure><img alt=""><figcaption></figcaption></figure>
+    <button class="lb-nav lb-prox" aria-label="Próxima">›</button>
+  </div>
+
+  <dialog class="consulta" id="consulta">
+    <form id="consulta-form" novalidate>
+      <button type="button" class="consulta-fechar" aria-label="Fechar">×</button>
+      <p class="sobretitulo">Meu agendamento</p>
+      <h3>Consultar ou cancelar</h3>
+      <label>Código do agendamento<input name="codigo" required maxlength="6" placeholder="Ex.: A1B2C3" autocomplete="off"></label>
+      <label>WhatsApp usado no agendamento<input name="telefone" type="tel" required inputmode="numeric" placeholder="(00) 00000-0000"></label>
+      <p class="form-erro" id="consulta-erro" role="alert"></p>
+      <div id="consulta-resultado"></div>
+      <button type="submit" class="btn btn-full" id="consulta-buscar">Buscar</button>
+    </form>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="agenda-core.js"></script>
+  <script src="api.js"></script>
+  <script src="script.js"></script>
+  <script src="agendar.js"></script>
+</body>
+</html>

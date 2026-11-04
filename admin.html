@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1f1a17">
+  <title>Painel · Regiane Paulino</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- LOGIN (só no modo online) -->
+  <div class="login" id="login" hidden>
+    <form class="login-card" id="login-form">
+      <div class="logo"><span class="mono">RP</span>Regiane Paulino</div>
+      <p class="ajuda">Entre para acessar a agenda.</p>
+      <label>E-mail<input type="email" name="email" required autocomplete="username"></label>
+      <label>Senha<input type="password" name="senha" required autocomplete="current-password"></label>
+      <p class="erro" id="login-erro"></p>
+      <button class="btn btn-full" type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <div class="carregando" id="carregando"><span class="spinner"></span></div>
+
+  <header class="a-topo">
+    <div class="logo"><span class="mono">RP</span>Regiane Paulino <small>Painel</small></div>
+    <div class="topo-dir">
+      <span class="modo" id="modo"></span>
+      <a href="index.html" class="a-link" target="_blank">Ver site ↗</a>
+    </div>
+  </header>
+
+  <main class="a-main">
+    <!-- AGENDA -->
+    <section class="view ativa" id="v-agenda">
+      <div id="ag-pendentes"></div>
+      <div class="cab">
+        <button class="ic" data-dia="-1" aria-label="Dia anterior">‹</button>
+        <div class="cab-centro">
+          <h2 id="ag-titulo"></h2>
+          <button class="lnk" id="ag-hoje">Ir para hoje</button>
+        </div>
+        <button class="ic" data-dia="1" aria-label="Próximo dia">›</button>
+      </div>
+      <div class="semana" id="ag-semana"></div>
+      <div class="resumo" id="ag-resumo"></div>
+      <div class="lista" id="ag-lista"></div>
+      <button class="fab" data-novo="agendamento">+ Agendar</button>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="view" id="v-clientes">
+      <div class="cab"><h2>Clientes</h2></div>
+      <input class="busca" id="cli-busca" type="search" placeholder="Buscar por nome ou telefone…">
+      <div class="lista" id="cli-lista"></div>
+      <button class="fab" data-novo="cliente">+ Cliente</button>
+    </section>
+
+    <!-- MARY KAY -->
+    <section class="view" id="v-mk">
+      <div class="cab"><h2>Mary Kay</h2></div>
+      <div class="abas">
+        <button class="aba ativa" data-sub="vendas">Vendas</button>
+        <button class="aba" data-sub="produtos">Estoque</button>
+      </div>
+      <div class="sub ativa" id="mk-vendas">
+        <div class="lista" id="mk-lista-vendas"></div>
+        <button class="fab" data-novo="venda">+ Venda</button>
+      </div>
+      <div class="sub" id="mk-produtos">
+        <div class="lista" id="mk-lista-produtos"></div>
+        <button class="fab" data-novo="produto">+ Produto</button>
+      </div>
+    </section>
+
+    <!-- FINANCEIRO -->
+    <section class="view" id="v-fin">
+      <div class="cab"><h2>Financeiro</h2></div>
+      <div class="abas" id="fin-periodo">
+        <button class="aba" data-p="hoje">Hoje</button>
+        <button class="aba" data-p="semana">7 dias</button>
+        <button class="aba ativa" data-p="mes">Este mês</button>
+        <button class="aba" data-p="ano">Este ano</button>
+      </div>
+      <div class="kpis" id="fin-kpis"></div>
+      <h3 class="sub-tit">Serviços mais feitos</h3>
+      <div class="lista" id="fin-top"></div>
+      <h3 class="sub-tit">A receber (Mary Kay fiado)</h3>
+      <div class="lista" id="fin-receber"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="view" id="v-ajustes">
+      <div class="cab"><h2>Ajustes</h2></div>
+
+      <h3 class="sub-tit">Horário de atendimento</h3>
+      <div class="lista" id="aj-horarios"></div>
+
+      <h3 class="sub-tit">Folgas e bloqueios</h3>
+      <p class="ajuda">Feriados, férias, compromissos — o site não oferece horários nesses períodos.</p>
+      <div class="lista" id="aj-bloqueios"></div>
+      <button class="btn btn-outline" data-novo="bloqueio">+ Bloquear período</button>
+
+      <h3 class="sub-tit">Regras do agendamento online</h3>
+      <div class="lista" id="aj-regras"></div>
+
+      <h3 class="sub-tit">Serviços, duração e preços</h3>
+      <div class="lista" id="aj-servicos"></div>
+      <button class="btn btn-outline" data-novo="servico">+ Novo serviço</button>
+
+      <h3 class="sub-tit">Dados</h3>
+      <p class="ajuda" id="aj-dados-ajuda"></p>
+      <div class="botoes">
+        <button class="btn" id="aj-exportar">Baixar backup</button>
+        <label class="btn btn-outline" id="aj-importar-l">Restaurar backup<input type="file" id="aj-importar" accept="application/json" hidden></label>
+        <button class="btn btn-perigo" id="aj-apagar">Apagar dados de teste</button>
+        <button class="btn btn-outline" id="aj-sair" hidden>Sair</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="a-nav">
+    <button class="ativa" data-view="agenda"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Agenda<b class="badge" id="badge-pend" hidden></b></button>
+    <button data-view="clientes"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Clientes</button>
+    <button data-view="mk"><svg viewBox="0 0 24 24"><path d="M9 21h6V11H9zM10 11V6l4-3v8"/></svg>Mary Kay</button>
+    <button data-view="fin"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Financeiro</button>
+    <button data-view="ajustes"><svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Ajustes</button>
+  </nav>
+
+  <dialog class="modal" id="modal">
+    <form method="dialog" id="modal-form" novalidate>
+      <h3 id="modal-titulo"></h3>
+      <div id="modal-aviso" class="aviso" hidden></div>
+      <div id="modal-campos"></div>
+      <div id="modal-extra"></div>
+      <div class="modal-acoes">
+        <button type="button" class="btn btn-perigo-lnk" id="modal-excluir" hidden>Excluir</button>
+        <span></span>
+        <button type="button" class="btn btn-outline" id="modal-cancelar">Cancelar</button>
+        <button type="submit" class="btn" id="modal-salvar">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="agenda-core.js"></script>
+  <script src="api.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
