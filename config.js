@@ -17,7 +17,7 @@ window.SITE_CONFIG = {
 
   // Texto livre — aparece no rodapé e na seção de contato.
   endereco: "Atendimento com hora marcada",
-  horario: "Ter a Sáb · 9h às 19h",
+  horario: "Seg a Qui · 8h às 18h · Sex · 8h às 17h30",
 
   // ----------------------------------------------------------
   //  Banco de dados do agendamento online (Supabase).
@@ -28,7 +28,6 @@ window.SITE_CONFIG = {
     url: "https://ikvhnbxvgsdigkiaajnf.supabase.co",
     anonKey: "sb_publishable_-Amp1qUHCjOfpjTSo38cNw_v_JxzcvW"
   },
-
 
   // Textos de marketing dos serviços (o que aparece na seção "Especialidades").
   // Duração e preço reais são configurados no painel → Ajustes → Serviços.
