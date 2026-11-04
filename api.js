@@ -165,8 +165,19 @@ window.API = (function () {
       body: JSON.stringify({ email, password: senha })
     });
     const j = await r.json();
-    if (!r.ok) throw new Error(j.error_description === "Invalid login credentials" ? "E-mail ou senha incorretos." : (j.error_description || j.msg || "Não foi possível entrar."));
+    if (!r.ok) {
+      const m = j.error_description || j.msg || j.message || "";
+      if (/invalid login credentials/i.test(m)) throw new Error("E-mail ou senha incorretos. Confira o usuário em Supabase → Authentication → Users.");
+      if (/email not confirmed/i.test(m)) throw new Error("E-mail ainda não confirmado. No Supabase, crie o usuário com \"Auto Confirm User\" marcado (ou confirme pelo e-mail recebido).");
+      throw new Error(m || "Não foi possível entrar.");
+    }
     guardarSessao(j);
+    // confere se este e-mail está liberado na tabela administradores
+    const ok = await sbFetch("/rest/v1/rpc/eh_admin", { method: "POST", body: {}, auth: true }).catch(() => null);
+    if (ok === false) {
+      sair();
+      throw new Error(`O e-mail ${email} entrou, mas não está liberado no painel. No Supabase → SQL Editor, rode: insert into administradores (email) values ('${email}');`);
+    }
     return true;
   }
   function sair() { sessao = null; localStorage.removeItem(SESSAO); }
