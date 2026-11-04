@@ -61,7 +61,7 @@
     try {
       db = await api.carregarTudo();
       $("#login").hidden = true;
-      render();
+      render(); marcarAtualizado(true);
     } catch (e) {
       if (/sess|jwt|token/i.test(e.message)) { api.sair(); $("#login").hidden = false; }
       toast(e.message, true);
@@ -75,17 +75,46 @@
   });
   $("#aj-sair").addEventListener("click", () => { api.sair(); location.reload(); });
 
-  // Atualiza sozinho a cada 60 s (novas reservas do site)
-  setInterval(async () => {
-    if (!db || $("#modal").open || document.hidden) return;
+  // ---------------- atualização automática (a cada 1 minuto) ----------------
+  const INTERVALO = 60000;
+  let ultimaAtualizacao = Date.now(), atualizando = false, pendenteAoFechar = false;
+  const horaAgora = () => new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  function marcarAtualizado(ok = true) {
+    const el = $("#sync");
+    el.classList.toggle("falha", !ok);
+    $("#sync-txt").textContent = ok ? `Atualizado ${horaAgora()}` : "Sem conexão · tentando de novo";
+    if (ok) ultimaAtualizacao = Date.now();
+  }
+  async function atualizar(manual = false) {
+    if (!db || atualizando || !api.logado()) return;
+    if ($("#modal").open) { pendenteAoFechar = true; return; } // não atrapalha quem está editando
+    atualizando = true; $("#sync").classList.add("girando");
     try {
       const novo = await api.carregarTudo();
-      const antes = db.agendamentos.filter((g) => g.status === "pendente").length;
-      db = novo; render();
-      const depois = db.agendamentos.filter((g) => g.status === "pendente").length;
-      if (depois > antes) toast("Nova solicitação de agendamento!");
-    } catch {}
-  }, 60000);
+      const idsAntes = new Set(db.agendamentos.map((g) => g.id));
+      const novos = novo.agendamentos.filter((g) => !idsAntes.has(g.id) && g.status !== "cancelado");
+      db = novo; render(); marcarAtualizado(true);
+      if (novos.length) {
+        toast(novos.length === 1 ? `Novo agendamento: ${novos[0].nome} · ${A.dataCurta(novos[0].data)} ${novos[0].hora}` : `${novos.length} novos agendamentos!`);
+        if (document.hidden) document.title = `(${novos.length}) Novo agendamento · Painel`;
+      } else if (manual) toast("Agenda atualizada");
+    } catch (e) { marcarAtualizado(false); if (manual) toast(e.message, true); }
+    finally { atualizando = false; $("#sync").classList.remove("girando"); }
+  }
+  setInterval(() => atualizar(), INTERVALO);
+  // ao voltar para a aba, atualiza na hora se passou mais de 1 minuto
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) return;
+    document.title = "Painel · Regiane Paulino";
+    if (Date.now() - ultimaAtualizacao >= INTERVALO) atualizar();
+  });
+  $("#modal").addEventListener("close", () => { if (pendenteAoFechar) { pendenteAoFechar = false; atualizar(); } });
+  $("#sync").addEventListener("click", () => atualizar(true));
+  // contador "atualizado há X" sempre em dia
+  setInterval(() => { if (db && !$("#sync").classList.contains("falha")) {
+    const s = Math.round((Date.now() - ultimaAtualizacao) / 1000);
+    $("#sync-txt").textContent = s < 60 ? "Atualizado agora" : `Atualizado há ${Math.floor(s / 60)} min`;
+  } }, 15000);
 
   // ---------------- navegação ----------------
   $$(".a-nav button").forEach((b) => b.addEventListener("click", () => {
@@ -402,7 +431,14 @@
   // ---------------- agenda ----------------
   let diaAtual = hoje();
   const dispPainel = () => ({ hoje: A.agora(), horarios: db.horarios, ajustes: ajustes(), bloqueios: db.bloqueios, ocupados: db.agendamentos });
-  $$("[data-dia]").forEach((b) => b.addEventListener("click", () => { diaAtual = A.addDias(diaAtual, +b.dataset.dia * (modoAgenda === "semana" ? 7 : 1)); render(); }));
+  // Agenda: calendário do mês + detalhe do dia escolhido
+  const MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  $$("[data-mes]").forEach((b) => b.addEventListener("click", () => {
+    const [a, m] = diaAtual.split("-").map(Number);
+    const alvo = new Date(Date.UTC(a, m - 1 + +b.dataset.mes, 1)).toISOString().slice(0, 7);
+    diaAtual = hoje().startsWith(alvo) ? hoje() : alvo + "-01";
+    render();
+  }));
   $("#ag-hoje").addEventListener("click", () => { diaAtual = hoje(); render(); });
 
   function renderAgenda() {
@@ -418,31 +454,35 @@
         <button class="mini conf" data-acao="confirmar" title="Confirmar">${IC.ok}</button>
       </div>`).join("")}</div>` : "";
 
-    // título e semana
-    const d = new Date(diaAtual + "T12:00:00Z");
-    const tit = d.toLocaleDateString("pt-BR", { timeZone: "UTC", weekday: "long", day: "2-digit", month: "long" });
-    $("#ag-titulo").textContent = diaAtual === hoje() ? "Hoje, " + tit.split(", ")[1] : tit;
-    const ini = A.addDias(diaAtual, -A.diaSemana(diaAtual));
-    $("#ag-semana").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((i) => {
-      const dia = A.addDias(ini, i);
-      const n = db.agendamentos.filter((g) => g.data === dia && g.status !== "cancelado").length;
-      const h = db.horarios.find((x) => x.dia_semana === i);
-      return `<button class="sd${dia === diaAtual ? " sel" : ""}${dia === hoje() ? " hoje" : ""}${h?.ativo ? "" : " fechado"}" data-d="${dia}">
-        <small>${DIAS[i].slice(0, 3)}</small><b>${+dia.slice(8)}</b><i>${n ? "•".repeat(Math.min(n, 4)) : ""}</i></button>`;
-    }).join("");
-
-    // detalhamento
-    const h = db.horarios.find((x) => x.dia_semana === A.diaSemana(diaAtual));
-    if (modoAgenda === "semana") {
-      const fimSem = A.addDias(ini, 6);
-      $("#ag-titulo").textContent = `Semana de ${A.dataCurta(ini).slice(0, 5)} a ${A.dataCurta(fimSem).slice(0, 5)}`;
-      const daSemana = db.agendamentos.filter((g) => g.data >= ini && g.data <= fimSem && ATIVOS(g));
-      $("#ag-resumo").innerHTML = `<span class="pill"><b>${daSemana.length}</b> atendimento(s) na semana</span>
-        <span class="pill">Previsto <b>${brl(daSemana.reduce((s, g) => s + g.valor, 0))}</b></span>
-        <span class="pill"><b>${daSemana.reduce((s, g) => s + g.duracao_min, 0) / 60}</b> h ocupadas</span>`;
-      $("#ag-lista").innerHTML = [0, 1, 2, 3, 4, 5, 6].map((i) => cartaoDia(A.addDias(ini, i))).join("");
-      return;
+    // ---- mês ----
+    const mes = diaAtual.slice(0, 7), [ano, m] = mes.split("-").map(Number);
+    const nDias = new Date(Date.UTC(ano, m, 0)).getUTCDate();
+    const doMes = db.agendamentos.filter((g) => g.data.startsWith(mes) && ATIVOS(g));
+    $("#ag-titulo").textContent = `${MESES[m - 1]} de ${ano}`;
+    $("#ag-mes-resumo").textContent = `${doMes.length} atendimento(s) · previsto ${brl(doMes.reduce((s, g) => s + g.valor, 0))}`;
+    let cel = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((d) => `<span class="mes-sem">${d}</span>`).join("");
+    cel += "<span></span>".repeat(A.diaSemana(mes + "-01"));
+    for (let d = 1; d <= nDias; d++) {
+      const dia = `${mes}-${String(d).padStart(2, "0")}`;
+      const h = db.horarios.find((x) => x.dia_semana === A.diaSemana(dia));
+      const gs = doMes.filter((g) => g.data === dia).sort((a, b) => a.hora.localeCompare(b.hora));
+      const bl = bloqueiosDoDia(dia), inteiro = bl.some((b) => !b.hora_inicio);
+      const pendDia = gs.some((g) => g.status === "pendente");
+      const cls = ["mes-dia", dia === diaAtual ? "sel" : "", dia === hoje() ? "hoje" : "", dia < hoje() ? "passado" : "",
+        !h?.ativo ? "fechado" : "", inteiro ? "bloq" : "", gs.length ? "tem" : ""].join(" ");
+      cel += `<button class="${cls}" data-d="${dia}" aria-label="${A.dataLonga(dia)}: ${gs.length} atendimento(s)">
+        <b>${d}</b>
+        ${gs.length ? `<span class="mes-qtd${pendDia ? " pend" : ""}">${gs.length}</span>` : ""}
+        <span class="mes-ags">${gs.slice(0, 3).map((g) => `<i class="st-${g.status}">${g.hora} ${esc(primeiro(g.nome))}</i>`).join("")}${gs.length > 3 ? `<i class="mais">+${gs.length - 3}</i>` : ""}</span>
+        ${inteiro ? `<span class="mes-tag">bloqueado</span>` : !h?.ativo && !gs.length ? `<span class="mes-tag">fechado</span>` : ""}
+      </button>`;
     }
+    $("#ag-mes").innerHTML = cel;
+
+    // ---- detalhe do dia ----
+    const h = db.horarios.find((x) => x.dia_semana === A.diaSemana(diaAtual));
+    const tit = A.dataLonga(diaAtual);
+    $("#ag-dia-titulo").textContent = (diaAtual === hoje() ? "Hoje · " : "") + tit.charAt(0).toUpperCase() + tit.slice(1);
     const doDia = db.agendamentos.filter((g) => g.data === diaAtual).sort((a, b) => a.hora.localeCompare(b.hora));
     const ativos = doDia.filter(ATIVOS);
     const bloq = bloqueiosDoDia(diaAtual);
@@ -451,7 +491,7 @@
     const abertoMin = h?.ativo ? A.min(h.fim) - A.min(h.inicio) - (h.pausa_inicio ? A.min(h.pausa_fim) - A.min(h.pausa_inicio) : 0) : 0;
     $("#ag-resumo").innerHTML = `<span class="pill"><b>${ativos.length}</b> atendimento(s)</span>
       <span class="pill">Previsto <b>${brl(ativos.reduce((s, g) => s + g.valor, 0))}</b></span>
-      <span class="pill">${h?.ativo ? `Aberto ${h.inicio}–${h.fim}${h.pausa_inicio ? ` · pausa ${h.pausa_inicio}–${h.pausa_fim}` : ""}` : "Fechado"}</span>
+      <span class="pill">${h?.ativo ? `Aberto ${h.inicio}–${h.fim}${h.pausa_inicio ? ` · almoço ${h.pausa_inicio}–${h.pausa_fim}` : ""}` : "Fechado"}</span>
       ${abertoMin ? `<span class="pill">Ocupação <b>${Math.min(100, Math.round((ocupadoMin / abertoMin) * 100))}%</b></span>` : ""}
       ${h?.ativo ? `<span class="pill">${livres} horário(s) livres de 1h</span>` : ""}
       ${bloq.map((b) => `<span class="pill bloq">Bloqueado ${b.hora_inicio ? `${b.hora_inicio}–${b.hora_fim}` : "o dia todo"}${b.motivo ? ` · ${esc(b.motivo)}` : ""}</span>`).join("")}`;
@@ -519,38 +559,15 @@
       <div class="tl-legenda"><span><i class="lg-ag"></i>Agendado</span><span><i class="lg-livre"></i>Livre (toque para agendar)</span><span><i class="lg-faixa"></i>Pausa / bloqueio</span></div>`;
   }
 
-  // Cartão de um dia na visão semanal
-  function cartaoDia(dia) {
-    const h = db.horarios.find((x) => x.dia_semana === A.diaSemana(dia));
-    const gs = db.agendamentos.filter((g) => g.data === dia && ATIVOS(g)).sort((a, b) => a.hora.localeCompare(b.hora));
-    const bloq = bloqueiosDoDia(dia);
-    const agoraS = A.agora(), passou = dia < agoraS.slice(0, 10);
-    const livres = h?.ativo && !passou ? A.slots(dispPainel(), dia, 60, { painel: true }).filter((l) => dia > agoraS.slice(0, 10) || A.min(l) > A.min(agoraS.slice(11))) : [];
-    const diaInteiro = bloq.some((b) => !b.hora_inicio);
-    const nome = new Date(dia + "T12:00:00Z").toLocaleDateString("pt-BR", { timeZone: "UTC", weekday: "long", day: "2-digit", month: "2-digit" });
-    const estado = !h?.ativo ? "Fechado" : diaInteiro ? "Bloqueado" : `${h.inicio}–${h.fim}${h.pausa_inicio ? ` · pausa ${h.pausa_inicio}–${h.pausa_fim}` : ""}`;
-    return `<div class="dia-card${dia === hoje() ? " hoje" : ""}${!h?.ativo || diaInteiro ? " fechado" : ""}">
-      <button class="dia-cab" data-ir-dia="${dia}">
-        <span><b>${nome}</b><small>${estado}</small></span>
-        <span class="dia-num">${gs.length ? `${gs.length} atend. · ${brl(gs.reduce((s, g) => s + g.valor, 0))}` : "Sem atendimentos"}</span>
-      </button>
-      ${gs.length ? `<div class="dia-ags">${gs.map((g) => `<div class="item mini-ag ${g.status}" data-id="${g.id}">
-          <div class="hora">${g.hora}<small>${fimHora(g)}</small></div>
-          <div class="corpo"><div class="t1">${esc(g.nome)}</div><div class="t2">${esc(g.servico_nome)} <span class="st st-${g.status}">${STATUS[g.status]}</span></div></div></div>`).join("")}</div>` : ""}
-      ${bloq.filter((b) => b.hora_inicio).map((b) => `<div class="tl-faixa"><b>${b.hora_inicio}–${b.hora_fim}</b>Bloqueado${b.motivo ? ` · ${esc(b.motivo)}` : ""}</div>`).join("")}
-      ${passou ? "" : h?.ativo && !diaInteiro ? `<div class="dia-livres">${livres.length ? `<small>Livres (1h):</small> ${livres.map((l) => `<span>${l}</span>`).join("")}` : "<small>Sem horários livres de 1h</small>"}</div>` : ""}
-    </div>`;
-  }
   $("#ag-lista").addEventListener("click", (e) => {
     const n = e.target.closest("[data-novo-hora]");
-    if (n) return forms.agendamento(null, { hora: n.dataset.novoHora });
-    const d = e.target.closest("[data-ir-dia]");
-    if (d) { diaAtual = d.dataset.irDia; modoAgenda = "dia"; marcarModo(); render(); scrollTo(0, 0); }
+    if (n) forms.agendamento(null, { hora: n.dataset.novoHora });
   });
-  let modoAgenda = "dia";
-  function marcarModo() { $$("#ag-modo .aba").forEach((b) => b.classList.toggle("ativa", b.dataset.m === modoAgenda)); }
-  $$("#ag-modo .aba").forEach((b) => b.addEventListener("click", () => { modoAgenda = b.dataset.m; marcarModo(); render(); }));
-  $("#ag-semana").addEventListener("click", (e) => { const b = e.target.closest(".sd"); if (b) { diaAtual = b.dataset.d; render(); } });
+  $("#ag-mes").addEventListener("click", (e) => {
+    const b = e.target.closest(".mes-dia"); if (!b) return;
+    diaAtual = b.dataset.d; render();
+    $("#ag-dia-titulo").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   async function acaoAgenda(e) {
     const el = e.target.closest(".item"); if (!el) return;
