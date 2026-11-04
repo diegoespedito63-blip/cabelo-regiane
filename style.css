@@ -386,3 +386,71 @@ h2 { font-size: clamp(2.2rem, 4vw, 3.2rem); margin-bottom: 1.2rem; }
   .etapa-tit { font-size: 1.5rem; }
   .consulta form { padding: 2rem 1.4rem; }
 }
+
+/* =====================================================================
+   Cantos arredondados — acabamento suave e consistente
+   ===================================================================== */
+:root { --r-xl: 32px; --r-lg: 22px; --r-md: 16px; --r-sm: 12px; --sombra-suave: 0 18px 50px rgba(31,26,23,.08); }
+
+/* botões e chips */
+.btn { border-radius: 999px; }
+.btn-sm { padding: .7rem 1.4rem; }
+.filtros { gap: .6rem; }
+.filtro { border: 1px solid var(--linha); border-radius: 999px; padding: .6rem 1.3rem; background: var(--branco); }
+.filtro:hover { border-color: var(--ouro); }
+.filtro.ativo { background: var(--tinta); color: var(--branco); border-color: var(--tinta); }
+
+/* hero */
+.hero-moldura { border-radius: var(--r-xl); box-shadow: var(--sombra-suave); }
+.hero-moldura::after { border-radius: calc(var(--r-xl) - 12px); }
+.hero-cartao { border-radius: var(--r-md); }
+
+/* sobre */
+.sobre-foto img { border-radius: var(--r-xl); }
+.sobre-foto::before { border-radius: calc(var(--r-xl) + 4px); }
+
+/* serviços: cartões separados */
+.servicos { border: 0; gap: 1.2rem; }
+.servico { border: 1px solid var(--linha); border-radius: var(--r-lg); background: var(--marfim); transition: transform .3s, box-shadow .3s, border-color .3s; }
+.servico:hover { background: var(--branco); transform: translateY(-4px); box-shadow: var(--sombra-suave); border-color: transparent; }
+.servico svg { width: 52px; height: 52px; padding: 11px; border-radius: 50%; background: var(--areia); }
+
+/* portfólio */
+.galeria .quadro { border-radius: var(--r-lg); }
+.lightbox img { border-radius: var(--r-md); }
+
+/* como funciona */
+.passos li { background: var(--marfim); border: 1px solid var(--linha); border-radius: var(--r-lg); padding: 2rem; }
+
+/* mary kay */
+.mk-categorias { border: 0; gap: 1rem; }
+.mk-categorias li { border: 1px solid rgba(255,255,255,.12); border-radius: var(--r-lg); background: rgba(255,255,255,.03); }
+.mk-categorias svg { width: 48px; height: 48px; padding: 10px; border-radius: 50%; background: rgba(216,191,149,.1); }
+
+/* agendamento */
+.agenda { border-top: 0; border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sombra-suave); }
+.op-servico { border-radius: var(--r-md); }
+.cal-nav { border-radius: 50%; }
+.dia { border-radius: var(--r-sm); }
+.slot { border-radius: 999px; }
+.ok-codigo { border-radius: var(--r-md); }
+.cal-legenda i { border-radius: 4px; }
+.agenda-resumo .btn { margin-top: -.4rem; }
+.form-ag textarea, .form-ag input:not([type=checkbox]), .consulta input {
+  border: 1px solid var(--linha); border-radius: var(--r-sm); padding: .8rem 1rem; background: var(--marfim);
+}
+.form-ag textarea:focus, .form-ag input:not([type=checkbox]):focus, .consulta input:focus { border-color: var(--vinho); background: var(--branco); box-shadow: 0 0 0 3px rgba(122,46,64,.08); }
+.form-ag .aceite input { border-radius: 4px; }
+.consulta { border-radius: var(--r-xl); }
+.consulta-card { border-radius: var(--r-md); }
+.status-tag { border-radius: 999px; }
+
+/* menu mobile */
+@media (max-width: 820px) {
+  .menu { border-radius: 0 0 var(--r-lg) var(--r-lg); box-shadow: 0 20px 40px rgba(31,26,23,.08); }
+  .agenda { border-radius: var(--r-lg); }
+}
+@media (max-width: 560px) {
+  .hero-moldura, .sobre-foto img { border-radius: var(--r-lg); }
+  .passos li { padding: 1.6rem; }
+}
