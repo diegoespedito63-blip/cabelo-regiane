@@ -25,8 +25,8 @@ window.SITE_CONFIG = {
   //  Use a chave pública (anon / publishable) — NUNCA a service_role.
   // ----------------------------------------------------------
   supabase: {
-    url: "",
-    anonKey: ""
+    url: "https://ikvhnbxvgsdigkiaajnf.supabase.co",
+    anonKey: "sb_publishable_-Amp1qUHCjOfpjTSo38cNw_v_JxzcvW"
   },
 
   // Textos de marketing dos serviços (o que aparece na seção "Especialidades").
