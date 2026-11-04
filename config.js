@@ -7,10 +7,10 @@ window.SITE_CONFIG = {
 
   // WhatsApp no formato internacional, só números (ex: 5511999998888).
   // TODO: preencher com o número da Regiane.
-  whatsapp: "",
+  whatsapp: "5519991831556",
 
   // TODO: trocar pelo link do Instagram quando chegar.
-  instagram: "",
+  instagram: "https://www.instagram.com/re_paulino82/",
   instagramHandle: "@regianepaulino",
 
   maryKay: "https://loja.marykay.com.br/minha-vitrine?slug=rehpaulino",
